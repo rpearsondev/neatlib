@@ -1,0 +1,15 @@
+[package]
+name = "quad_tree"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+path = "src/main.rs"
+name = "quad_tree"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+image = "0.24.2"
+image-compare = "0.2.4"
+neatlib = { path = "../../" }

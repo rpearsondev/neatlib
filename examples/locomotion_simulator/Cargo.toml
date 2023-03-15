@@ -1,0 +1,27 @@
+[package]
+name = "locomotion_simulator"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+path = "src/main.rs"
+name = "locomotion_simulator"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+neatlib = { path = "../../" }
+rapier3d = { version = "0.15.0", features = [ "simd-stable" ] }
+serde_json = "1.0.81"
+serde = { version = "1.0.137", features = ["derive"] }
+bevy = {version = "0.8", features = ["jpeg"]}
+bevy_egui = "0.16"
+bevy_rapier3d = {version= "0.18.0", features = ["dim3"]}
+crossbeam-channel = "0.5"
+clap = {version= "4.1.4", features=["derive"]}
+[dependencies.uuid]
+version = "1.1.1"
+features = [
+    "v4",                # Lets you generate random UUIDs
+    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+    "serde"
+]
