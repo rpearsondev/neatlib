@@ -3,7 +3,7 @@ pub mod objects;
 pub mod simulation_renderer;
 
 use bevy_rapier3d::{na::{Vector3, UnitQuaternion}};
-use neatlib::{phenome::Phenome, neat::trainer::{fitness::{fitness_resolver::FitnessResolver, fitness_setter::FitnessSetter}, configuration::{Configuration, OffSpringMode}, node_conf::NodeConf, neat_trainer::NeatTrainer, activation_strategies::activation_strategies::ActivationStrategies, neat_trainer_host::neat_trainer_host::NeatTrainerHost}, activation_functions::ActivationFunction, renderer::renderer::{self}, common::{NeatFloat, cpu_limiter::CpuLimiter}, hyperneat::substrate::{substrate_type::SubstrateType, substrate_coordinate_scheme::SubstrateCoordinateScheme, substrate_geometric_organization::SubstrateGeometricOrganization, substrate_set_connection_mode::SubstrateSetConnectionMode, substrate_set_cppn_mode::SubstrateSetCPPNMode, substrate::Substrate, substrate_set::SubstrateSet}};
+use neatlib::{phenome::Phenome, neat::trainer::{fitness::{fitness_resolver::FitnessResolver, fitness_setter::FitnessSetter}, configuration::{Configuration, OffSpringMode}, node_conf::NodeConf, neat_trainer::NeatTrainer, activation_strategies::activation_strategies::ActivationStrategies, neat_trainer_host::neat_trainer_host::NeatTrainerHost}, activation_functions::ActivationFunction, renderer::renderer::{self}, common::{NeatFloat, cpu_limiter::CpuLimiter}};
 use objects::{rocket::Rocket as SimulationRocket, floor::Floor, target::Target};
 use rapier3d::{crossbeam, prelude::{CollisionEvent, ChannelEventCollector}};
 use simulation_renderer::SimulationRender;
@@ -13,28 +13,6 @@ const STEPS: u32 = 1000;
 const RENDER_STEPS_PER_SECOND: f32 = 500.0;
 
 fn main() {
-
-    let _hyperneat_configuration = Configuration::hyperneat(
-        SubstrateSet::new(
-            SubstrateCoordinateScheme::CenterOut,
-            SubstrateGeometricOrganization::Sandwich,
-            ActivationFunction::TANH,
-            SubstrateSetConnectionMode::ForwardOne,
-            SubstrateSetCPPNMode::XyzAngleDistanceToXyzAngleDistance,
-        Substrate::new(SubstrateType::Input, 9), 
-    vec![
-            Substrate::new(SubstrateType::Hidden, 3),
-        ],
-        Substrate::new(SubstrateType::Output, 2)
-    ), 1000000.0)
-    .target_species(8)
-    .genome_minimal_genes_to_connect_ratio(1.0)
-    .mutation_node_available_activation_functions(ActivationFunction::for_cppn())
-    .mutation_connection_allow_recurrent(false)
-    .speciation_drop_species_no_improvement_generations(8)
-    .speciation_new_species_protected_for_generations(3)
-    .population_size(200);
-
     let configuration = Configuration::neat(NodeConf::simple(9, 2), 100000.0)
     .target_species(60)
     .run_name("rocket".to_string())
@@ -58,7 +36,7 @@ fn main() {
     renderer::gui_runner(host, client, SimulationRender);
 }
 
-pub fn run_simulation_headless(phenotype: &Phenome, fitness_resolver: &mut FitnessResolver) {
+pub fn run_simulation_headless(phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver) {
     let (mut simulation, mut rocket, target, collision_recv) = setup_simulation();
     let mut total_x_distances = 0.0;
     let mut total_y_distances = 0.0;
@@ -132,7 +110,7 @@ pub fn setup_simulation() -> (Simulation, SimulationRocket, Target, crossbeam_ch
     (simulation, rocket, target, collision_recv)
 }
 
-pub fn run_step(rocket: &mut SimulationRocket, target: &Target, phenome: &Phenome, simulation: &mut Simulation, sim_time_fraction: f32, collision_recv: crossbeam_channel::Receiver<CollisionEvent>) {
+pub fn run_step(rocket: &mut SimulationRocket, target: &Target, phenome: &dyn Phenome, simulation: &mut Simulation, sim_time_fraction: f32, collision_recv: crossbeam_channel::Receiver<CollisionEvent>) {
     let position = rocket.get_position(&mut simulation.rapier_context);
     let target_position = target.get_position(&mut simulation.rapier_context);
     let angle_from_y = position.rotation.angle_to(&UnitQuaternion::from_axis_angle(&Vector3::y_axis(), 0.0));

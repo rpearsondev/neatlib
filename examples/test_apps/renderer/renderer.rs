@@ -4,14 +4,10 @@ use neatlib::{neat::{
     genome::neat::{NeatGenome, mutation_mode::MutationMode }, 
     genome::genome::Genome,
     trainer::{run_context::RunContext, configuration::Configuration, node_conf::NodeConf}
-}, renderer::renderer::{render_network_definition, render_substrate_set}, hyperneat::substrate::{substrate_set::SubstrateSet, substrate_coordinate_scheme::SubstrateCoordinateScheme, substrate_geometric_organization::SubstrateGeometricOrganization, substrate::Substrate, substrate_type, substrate_set_connection_mode::SubstrateSetConnectionMode, substrate_set_cppn_mode::SubstrateSetCPPNMode}, activation_functions::ActivationFunction};
+}, renderer::renderer::{render_network_definition}};
 
 fn main(){
-    if false{
-        render_neat();
-    }else{
-        render_substrate();
-    }
+    render_neat();
 }
 
 fn render_neat(){
@@ -27,20 +23,4 @@ fn render_neat(){
     }
     genome.genes.cleanup_orphan_nodes();
     render_network_definition(Arc::from(*genome));
-}
-
-fn render_substrate(){
-    let substrate_set = SubstrateSet::new(
-        SubstrateCoordinateScheme::CenterOut, 
-        SubstrateGeometricOrganization::Sandwich, 
-        ActivationFunction::BIPOLAR_SIGMOID,
-        SubstrateSetConnectionMode::Forward, 
-        SubstrateSetCPPNMode::XyzAngleDistanceToXyzAngleDistance,
-        Substrate::new(substrate_type::SubstrateType::Input, 28), 
-        vec![
-            Substrate::new(substrate_type::SubstrateType::Hidden, 50), 
-            Substrate::new(substrate_type::SubstrateType::Hidden, 50)
-        ],
-        Substrate::new(substrate_type::SubstrateType::Output, 20));
-        render_substrate_set(substrate_set);
 }

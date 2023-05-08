@@ -47,7 +47,6 @@ impl ConfigurationDefaults{
             speciation_min_threshold: 0.1,
             speciation_species_min_number_of_members: 0,
             speciation_cross_species_reproduction_scale: 0.01,
-            hyperneat_substrate_set: None,
             reproduction_weights_from_fitter_probability: 0.51,
             print_summary_interval: None,
             print_summary_number_of_species_to_show: 10,

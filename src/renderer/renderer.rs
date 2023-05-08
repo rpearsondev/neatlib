@@ -1,8 +1,6 @@
 use std::sync::Arc;
 use bevy::prelude::*;
 use bevy_egui::{EguiPlugin};
-use crate::hyperneat::substrate::network_definition_factory::XyzNetworkParameter;
-use crate::hyperneat::substrate::substrate_set::SubstrateSet;
 use crate::neat::genome::neat::NeatGenome;
 use crate::neat::population::GenerationMember;
 use crate::neat::trainer::configuration::Configuration;
@@ -15,7 +13,6 @@ use crate::neat::trainer::neat_trainer_host::to_host_events::ToHostEvents;
 use crate::neat::trainer::config_regulators::config_regulator::ConfigRegulator;
 use super::plugins::neat_settings_gui::NeatSettingsGui;
 use super::plugins::network_renderer::NetworkDefinitionRenderer;
-use super::plugins::substrate_renderer::SubstrateRenderer;
 
 pub struct NeatTrainerState{
     pub run_until: Option<u32>,
@@ -42,7 +39,6 @@ pub fn gui_runner<T>(neat_trainer_host: NeatTrainerHost, trainer_host_client: Ne
     sub_app
     .add_plugin(NeatSettingsGui)
     .add_plugin(NetworkDefinitionRenderer::default())
-    .add_plugin(SubstrateRenderer::default())
     .add_plugin(simulation_renderer)
     .insert_non_send_resource(trainer_host_client)
     .insert_resource(NeatTrainerState{
@@ -113,22 +109,6 @@ pub fn render_network_definition(network_definition: Arc<NeatGenome>) {
     App::new()
     .add_plugins(DefaultPlugins)
     .add_plugin(NetworkDefinitionRenderer::for_genome_network(network_definition))
-    .add_plugin(EguiPlugin)
-    .run();
-}
-
-pub fn render_substrate_set(substrate_set: SubstrateSet) {
-    App::new()
-    .add_plugins(DefaultPlugins)
-    .add_plugin(SubstrateRenderer::for_substrate_set(substrate_set))
-    .add_plugin(EguiPlugin)
-    .run();
-}
-
-pub fn render_substrate_set_with_connections(substrate_set: SubstrateSet, network_definition_connections: Vec<XyzNetworkParameter>) {
-    App::new()
-    .add_plugins(DefaultPlugins)
-    .add_plugin(SubstrateRenderer::for_substrate_set_with_connections(substrate_set, network_definition_connections))
     .add_plugin(EguiPlugin)
     .run();
 }

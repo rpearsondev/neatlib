@@ -1910,6 +1910,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "env_logger"
+version = "0.9.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a12e6657c4c97ebab115a42dcee77225f7f482cdd841cf7088c657a42e9e00e7"
+dependencies = [
+ "atty",
+ "humantime 2.1.0",
+ "log",
+ "regex",
+ "termcolor",
+]
+
+[[package]]
 name = "epaint"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2181,6 +2194,17 @@ dependencies = [
  "futures-core",
  "futures-task",
  "futures-util",
+]
+
+[[package]]
+name = "futures-intrusive"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a604f7a68fbf8103337523b1fadc8ade7361ee3f112f7c680ad179651616aed5"
+dependencies = [
+ "futures-core",
+ "lock_api 0.4.7",
+ "parking_lot 0.11.2",
 ]
 
 [[package]]
@@ -2571,6 +2595,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "363e3677e55ad168fef68cf9de3a4a310b53124c5e784c53a1d70e92d23f2126"
 dependencies = [
  "bitflags",
+]
+
+[[package]]
+name = "gpu_experiment"
+version = "0.1.0"
+dependencies = [
+ "bytemuck",
+ "encase",
+ "env_logger 0.9.3",
+ "futures 0.3.23",
+ "futures-intrusive",
+ "neatlib",
+ "pollster",
+ "rayon",
+ "uuid",
+ "wgpu",
 ]
 
 [[package]]
@@ -4052,6 +4092,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "pollster"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5da3b0203fd7ee5720aa0b5e790b591aa5d3f41c3ed2c34a3a393382198af2f7"
+
+[[package]]
 name = "pp-rs"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4142,15 +4188,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "quad_tree"
-version = "0.1.0"
-dependencies = [
- "image 0.24.2",
- "image-compare",
- "neatlib",
 ]
 
 [[package]]

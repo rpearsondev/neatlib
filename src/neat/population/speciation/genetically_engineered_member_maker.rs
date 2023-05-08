@@ -82,8 +82,7 @@ impl GeneticallyEngineeredMemberMaker{
                     genome: mutant_genome, 
                     created_generation: run_context.current_generation,
                     number_of_generations_since_species_improved: 0,
-                    species_hint: species_id.clone(), 
-                    hyperneat_network_definition: None });
+                    species_hint: species_id.clone()});
             }
         }
     }

@@ -1,7 +1,7 @@
 use bevy::{prelude::{Plugin, App, Commands, Query, Transform, Mesh, ResMut, Assets, StandardMaterial, Camera, Vec3, Camera3dBundle, Res, DirectionalLightBundle, DirectionalLight}, render::{view::{RenderLayers}}, time::{Time, Timer}};
 use bevy_egui::EguiPlugin;
 use crossbeam_channel::Receiver;
-use neatlib::{neat::genome::neat::NeatGenome, phenome::Phenome, renderer::renderer::NeatTrainerState, hyperneat::substrate::{ network_definition_factory::NetworkDefinitionFactory}};
+use neatlib::{neat::genome::neat::NeatGenome, renderer::renderer::NeatTrainerState, cpu_phenome::CpuPhenome};
 use rapier3d::prelude::{Isometry, Real};
 use crate::{simulator::simulation::Simulation, setup_simulation, objects::{self, body::{ Body, BodyPartUpdateComponent}, floor::Floor, motor_positions::MotorPositions}, run_step, STEPS, RENDER_STEPS_PER_SECOND, plugins::body_window::body_window::BodyWindow, behaviour_analyser::Behaviours};
 const RENDER_LAYER: u8 = 1;
@@ -73,7 +73,7 @@ fn startup(
 
 pub struct SimulationRun{
     pub network: Option<NeatGenome>,
-    pub phenome: Option<Phenome>,
+    pub phenome: Option<CpuPhenome>,
     pub simulation: Simulation,
     pub simulation_complete: bool,
     pub simulation_steps: u32,
@@ -86,14 +86,9 @@ pub struct SimulationRun{
 fn update_network_to_show(trainer_state: ResMut<NeatTrainerState>, mut current_run: ResMut<SimulationRun>){
     if trainer_state.best_member_so_far.is_some() && current_run.simulation_complete{
         let x = &trainer_state.best_member_so_far.as_ref().as_ref().unwrap().genome;
-        let phenome = Phenome::from_network_schema(x);
+        let phenome = CpuPhenome::from_network_schema(x);
         current_run.network = Some(x.clone());
-        if trainer_state.configuration.hyperneat_substrate_set.is_some(){
-            let network_definition = NetworkDefinitionFactory::produce(phenome, trainer_state.configuration.hyperneat_substrate_set.as_ref().unwrap());
-            current_run.phenome = Some(Phenome::from_network_schema(&network_definition));
-        }else{
-            current_run.phenome = Some(phenome);
-        }
+        current_run.phenome = Some(phenome);
         current_run.simulation_complete = false;
     }
 }

@@ -1,6 +1,5 @@
 use crate::{activation_functions::ActivationFunction as GeneActivationFunction, node_kind::NodeKind};
-use crate::phenome::activations;
-use super::ActivationFunction;
+use super::{ActivationFunction, activations};
 
 pub struct ActivationMapper;
 

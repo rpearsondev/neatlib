@@ -1,7 +1,8 @@
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use wasm_stopwatch::Stopwatch;
-use crate::{activation_functions::{ActivationFunction as GeneActivationFunction, self}, neat::{genome::{neat::{node_gene::{NodeGene}, NeatGenome, connect_gene::ConnectGene, mutation_mode::MutationMode}, genome::Genome}, trainer::{run_context::RunContext, configuration::Configuration, node_conf::NodeConf}}, node_kind::NodeKind, common::NeatFloat};
-use crate::phenome::Phenome;
+use crate::{activation_functions::{ActivationFunction as GeneActivationFunction, self}, neat::{genome::{neat::{node_gene::{NodeGene}, NeatGenome, connect_gene::ConnectGene, mutation_mode::MutationMode}, genome::Genome}, trainer::{run_context::RunContext, configuration::Configuration, node_conf::NodeConf}}, node_kind::NodeKind, common::NeatFloat, phenome::Phenome};
+
+use super::CpuPhenome;
 #[test]
 fn maps_all_activations() {
     for activation in GeneActivationFunction::get_all(){
@@ -20,7 +21,7 @@ fn maps_all_activations() {
         minimal_genome.genes.nodes.get_mut_unchecked(2).bias = 0.0;
         minimal_genome.genes.nodes.get_mut_unchecked(3).bias = 0.0;
 
-        let phenotype = Phenome::from_network_schema(&minimal_genome);
+        let phenotype = CpuPhenome::from_network_schema(&minimal_genome);
 
         println!("genotype activation: {:?}", minimal_genome.genes.nodes.get_mut_unchecked(1).activation_function);
         println!("phenotype activation: {:?}", phenotype.layers[1].nodes[0].activation);
@@ -44,7 +45,7 @@ fn activate_minimal_one_million_times() {
     minimal_genome.genes.connect.get_mut_unchecked(1, 2).weight = 0.5;
     minimal_genome.genes.nodes.get_mut_unchecked(2).bias = 0.0;
 
-    let phenotype = Phenome::from_network_schema(&minimal_genome);
+    let phenotype = CpuPhenome::from_network_schema(&minimal_genome);
 
     for _i in 1..1000_000 {
         let result = phenotype.activate(&vec![2.0]);
@@ -66,7 +67,7 @@ fn activations_mapping_works_correctly_at_scale() {
             minimal_genome.mutate(&mut configuration, &mut run_context, MutationMode::Steady);
         }
         
-        let phenotype = Phenome::from_network_schema(&minimal_genome);
+        let phenotype = CpuPhenome::from_network_schema(&minimal_genome);
         phenotype.activate(&vec![2.0]);
     }
 }
@@ -88,7 +89,7 @@ fn activate_two_inputs_one_million_times() {
     minimal_genome.genes.nodes.get_mut_unchecked(2).bias = 0.0;
     minimal_genome.genes.nodes.get_mut_unchecked(3).bias = 0.0;
 
-    let phenotype = Phenome::from_network_schema(&minimal_genome);
+    let phenotype = CpuPhenome::from_network_schema(&minimal_genome);
 
     for _i in 1..1000_000{
         let result = phenotype.activate(&vec![3.0, 3.0]);
@@ -116,7 +117,7 @@ fn activate_recurrent_connection() {
     recurrent_connection.is_recurrent = true;
     minimal_genome.genes.connect.add(recurrent_connection);
 
-    let phenotype = Phenome::from_network_schema(&minimal_genome);
+    let phenotype = CpuPhenome::from_network_schema(&minimal_genome);
 
     let node_results: Vec<f64> = Vec::new();
     let result1 = phenotype.activate_recurrent(&vec![vec![3.0], vec![3.0]]);
@@ -144,7 +145,7 @@ fn activate_recurrent_connection_output_to_hidden() {
 
     minimal_genome.genes.connect.add(ConnectGene::new(3, 2, true));
 
-    let phenotype = Phenome::from_network_schema(&minimal_genome);
+    let phenotype = CpuPhenome::from_network_schema(&minimal_genome);
 
     let result1 = phenotype.activate_recurrent(&vec![vec![3.0], vec![3.0]]);
     let result2 = phenotype.activate(&vec![3.0]);
@@ -175,7 +176,7 @@ fn activate_one_inputs_with_one_hidden_one_million_times() {
     minimal_genome.genes.nodes.get_mut_unchecked(3).bias = 0.0;
 
 
-    let phenome = Phenome::from_network_schema(&minimal_genome);
+    let phenome = CpuPhenome::from_network_schema(&minimal_genome);
 
     for _i in 1..1000_000{
         let result = phenome.activate(&vec![1.0]);
@@ -202,7 +203,7 @@ fn activate_one_inputs_with_one_hidden_connection_skips_layer_one_million_times(
     minimal_genome.genes.nodes.get_mut_unchecked(3).bias = 0.0;
 
 
-    let phenotype = Phenome::from_network_schema(&minimal_genome);
+    let phenotype = CpuPhenome::from_network_schema(&minimal_genome);
 
     for _i in 1..1000_000{
         let result = phenotype.activate(&vec![1.0]);
@@ -232,7 +233,7 @@ fn phenotype_result_indexing_works_layer_skips() {
     minimal_genome.genes.nodes.get_mut_unchecked(3).bias = 0.0;
     minimal_genome.genes.nodes.get_mut_unchecked(4).bias = 0.0;
 
-    let phenotype = Phenome::from_network_schema(&minimal_genome);
+    let phenotype = CpuPhenome::from_network_schema(&minimal_genome);
 
     let result = phenotype.activate(&vec![1.0]);
     assert_eq!(result[0], 2.0);
@@ -264,7 +265,7 @@ fn activate_with_complex_network_does_not_panic_one_million_activations_parallel
     clone.genes.cleanup_orphan_nodes();
     println!("connect_genes:{:.2} node:genes:{:.2}, layers:{:.2}", clone.genes.connect.len(), clone.genes.nodes.len(), clone.genes.get_distance_from_sensor(&NodeGene::new(3, NodeKind::Output), 1));    
 
-    let mut phenotype = Phenome::from_network_schema(&minimal_genome);
+    let mut phenotype = CpuPhenome::from_network_schema(&minimal_genome);
     sw.reset();
     let range = 2.0;
     let steps  = 1000_000;
@@ -277,7 +278,7 @@ fn activate_with_complex_network_does_not_panic_one_million_activations_parallel
     println!("{} parallel activations took {}ms",steps, sw.get_time());
 
 
-    phenotype = Phenome::from_network_schema(&minimal_genome);
+    phenotype = CpuPhenome::from_network_schema(&minimal_genome);
     sw.reset();
     for i in 1..steps {
         let v = ((range / steps as NeatFloat) * i as NeatFloat) - (range / 2.0);

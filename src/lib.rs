@@ -2,7 +2,7 @@
 extern crate lazy_static;
 
 pub mod neat;
-pub mod hyperneat;
+pub mod cpu_phenome;
 pub mod phenome;
 pub mod common;
 pub mod renderer;

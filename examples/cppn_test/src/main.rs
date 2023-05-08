@@ -1,5 +1,5 @@
 use std::env;
-use neatlib::{neat::{trainer::{node_conf::NodeConf, configuration::{Configuration}, fitness::{fitness_resolver::FitnessResolver, fitness_setter::FitnessSetter}, neat_trainer_host::neat_trainer_host::NeatTrainerHost, neat_trainer::NeatTrainer, activation_strategies::activation_strategies::ActivationStrategies, run_context::RunContext}, genome::{neat::{NeatGenome, mutation_mode::MutationMode}, genome::Genome}}, activation_functions::ActivationFunction, common::{NeatFloat}, phenome::Phenome, renderer::renderer::{NullSimulationRenderer, self}};
+use neatlib::{neat::{trainer::{node_conf::NodeConf, configuration::{Configuration}, fitness::{fitness_resolver::FitnessResolver, fitness_setter::FitnessSetter}, neat_trainer_host::neat_trainer_host::NeatTrainerHost, neat_trainer::NeatTrainer, activation_strategies::activation_strategies::ActivationStrategies, run_context::RunContext}, genome::{neat::{NeatGenome, mutation_mode::MutationMode}, genome::Genome}}, activation_functions::ActivationFunction, common::{NeatFloat}, phenome::Phenome, renderer::renderer::{NullSimulationRenderer, self}, cpu_phenome::CpuPhenome};
 use image::{DynamicImage, GenericImage, Rgba};
 
 //cargo run --release
@@ -32,7 +32,7 @@ pub fn main(){
         if current_gen % 100 == 0{
             let best =  trainer.get_best_member_so_far();
             if best.is_some(){
-                write_image( &Phenome::from_network_schema(&best.as_ref().unwrap().genome), current_gen, 1000);
+                write_image( &CpuPhenome::from_network_schema(&best.as_ref().unwrap().genome), current_gen, 1000);
             }
         }
         
@@ -41,7 +41,7 @@ pub fn main(){
         strategy.new_generation();
         
         let color = image_one.clone();
-        let calc_fitness = move |phenotype: &Phenome, fitness_resolver: &mut FitnessResolver|{
+        let calc_fitness = move |phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver|{
             let primary = color.clone();
             calculate_fitness(phenotype, fitness_resolver, &primary);
         };
@@ -53,7 +53,7 @@ pub fn main(){
     renderer::gui_runner(host, client, NullSimulationRenderer);
 }
 
-fn calculate_fitness(phenotype: &Phenome, fitness_resolver: &mut FitnessResolver, primary_image_color: &DynamicImage ) {
+fn calculate_fitness(phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver, primary_image_color: &DynamicImage ) {
     let height: i32 = SIZE;
     let width: i32 = SIZE;
     let mut dynamic_image = DynamicImage::new_rgb8(width as u32, height as u32);
@@ -167,13 +167,13 @@ fn generate(){
             genome.mutate(&configuration, &mut run_context, MutationMode::Steady)
         }
         
-        let phenome = Phenome::from_network_schema(&genome);
+        let phenome = CpuPhenome::from_network_schema(&genome);
 
         write_image(&phenome, i, 500);
     }
 }
 
-fn write_image(phenotype: &Phenome, generation: u32, size: i32){
+fn write_image(phenotype: &dyn Phenome, generation: u32, size: i32){
     let height: i32 = size;
     let width: i32 = size;
     let mut dynamic_image = DynamicImage::new_rgb8(width as u32, height as u32);

@@ -97,7 +97,7 @@ pub fn simulation_testbed(){
     main_app.run()
 }
 
-pub fn run_simulation_headless(phenotype: &Phenome, fitness_resolver: &mut FitnessResolver) {
+pub fn run_simulation_headless(phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver) {
     let (mut simulation, mut body, collision_recv) = setup_simulation();
     
     let mut previous_sensors = body.get_sensors(&mut simulation.rapier_context).unwrap();
@@ -163,7 +163,7 @@ pub fn setup_simulation() -> (Simulation, SimulationBody, crossbeam_channel::Rec
     (simulation, body, collision_recv)
 }
 
-pub fn run_step(body: &mut SimulationBody, phenome: &Phenome, simulation: &mut Simulation, sim_time_fraction: f32, _collision_recv: crossbeam_channel::Receiver<CollisionEvent>){
+pub fn run_step(body: &mut SimulationBody, phenome: &dyn Phenome, simulation: &mut Simulation, sim_time_fraction: f32, _collision_recv: crossbeam_channel::Receiver<CollisionEvent>){
     let sensors = body.get_sensors(&mut simulation.rapier_context).unwrap();
     
     let result = phenome.activate(

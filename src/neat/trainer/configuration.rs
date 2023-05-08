@@ -2,7 +2,7 @@
 use array_tool::vec::{Uniq, self};
 use serde::{Deserialize, Serialize, Serializer};
 
-use crate::{neat::{genome::neat::{node_gene::NodeGene, mutation_add_mode::MutationNodeAddMode}, genetable::connect_gene_table::ConnectGeneTable}, hyperneat::substrate::substrate_set::SubstrateSet, node_kind::NodeKind, activation_functions::ActivationFunction, common::{NeatFloat, event_stream::{event::EventType, listeners::listeners::Listeners, event_subscription::EventSubscription}}};
+use crate::{neat::{genome::neat::{node_gene::NodeGene, mutation_add_mode::MutationNodeAddMode}, genetable::connect_gene_table::ConnectGeneTable}, node_kind::NodeKind, activation_functions::ActivationFunction, common::{NeatFloat, event_stream::{event::EventType, listeners::listeners::Listeners, event_subscription::EventSubscription}}};
 
 use super::{configuration_defaults::ConfigurationDefaults, node_conf::NodeConf};
 
@@ -50,7 +50,6 @@ pub struct Configuration{
     pub speciation_max_threshold: NeatFloat,
     pub speciation_species_min_number_of_members: usize,
     pub speciation_cross_species_reproduction_scale: NeatFloat,
-    pub hyperneat_substrate_set: Option<SubstrateSet>,
     pub reproduction_weights_from_fitter_probability: NeatFloat,
     pub print_summary_interval: Option<u32>,
     pub print_summary_number_of_species_to_show: usize,
@@ -97,16 +96,6 @@ impl Configuration{
         configuration.success_threshold = success_threshold;
         configuration
     }
-    pub fn hyperneat(substrate_set: SubstrateSet, success_threshold: NeatFloat) -> Self {
-        let mut configuration = ConfigurationDefaults::get()
-        .mutation_node_available_activation_functions_for_cppn();
-        let node_conf = substrate_set.get_cpp_node_conf();
-        configuration.hyperneat_substrate_set = Some(substrate_set);
-        configuration.success_threshold = success_threshold;
-        configuration.node_genes = node_conf;
-        configuration
-    }
-    
     pub fn set_mutation_config(original: &Configuration, outputs: &Vec<NeatFloat>) -> Self{
         let mut new_config = original.clone();
         new_config.mutation_node_add_probability = outputs[0];

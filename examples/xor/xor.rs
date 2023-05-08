@@ -4,7 +4,7 @@ use neatlib::{neat::trainer::{configuration::{Configuration}, node_conf::NodeCon
 pub fn main(){
     let success_threshold = 3.99;
     
-    let calculate_fitness = | phenotype: &Phenome, fitness_resolver: &mut FitnessResolver | {
+    let calculate_fitness = | phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver | {
         let xor_results= &[[0.0, 0.0, 0.0], [0.0, 1.0, 1.0], [1.0, 0.0, 1.0], [1.0, 1.0, 0.0]];
 
         let mut component_id = 0;

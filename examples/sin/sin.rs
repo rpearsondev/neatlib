@@ -4,7 +4,7 @@ use neatlib::{neat::{trainer::{node_conf::NodeConf, configuration::{Configuratio
 pub fn main(){
     let success_threshold = 18.9995;
 
-    let get_fitness = | phenotype: &Phenome, fitness_resolver: &mut FitnessResolver| {
+    let get_fitness = | phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver| {
         let mut sensor_inputs: Vec<NeatFloat> = Vec::with_capacity(20);
         let mut expected_results: Vec<NeatFloat> = Vec::with_capacity(20);
         // Create a non-linear curve to approximate.

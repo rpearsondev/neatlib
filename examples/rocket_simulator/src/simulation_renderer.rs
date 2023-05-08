@@ -1,6 +1,6 @@
 use bevy::{prelude::{Plugin, App, Commands, Query, With, Transform, Mesh, ResMut, Assets, StandardMaterial, Camera, Vec3, Camera3dBundle, Res, DirectionalLightBundle, DirectionalLight, Handle, AssetServer, Without}, render::{view::{RenderLayers}}, time::{Time, Timer}};
 use crossbeam_channel::Receiver;
-use neatlib::{neat::genome::neat::NeatGenome, phenome::Phenome, renderer::renderer::NeatTrainerState};
+use neatlib::{neat::genome::neat::NeatGenome, renderer::renderer::NeatTrainerState, cpu_phenome::CpuPhenome};
 use rapier3d::prelude::{Isometry, Real};
 use bevy_rapier3d::{utils};
 use crate::{simulator::simulation::Simulation, setup_simulation, objects::{self, rocket::{RocketComponent}, floor::Floor, target::{TargetComponent}}, run_step, STEPS, RENDER_STEPS_PER_SECOND};
@@ -71,7 +71,7 @@ fn startup(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut standar
 
 struct SimulationRun{
     pub network: Option<NeatGenome>,
-    pub phenome: Option<Phenome>,
+    pub phenome: Option<CpuPhenome>,
     pub simulation: Simulation,
     pub simulation_complete: bool,
     pub simulation_steps: u32,
@@ -85,7 +85,7 @@ struct SimulationRun{
 fn update_network_to_show(trainer_state: ResMut<NeatTrainerState>, mut current_run: ResMut<SimulationRun>){
     if trainer_state.best_member_so_far.is_some() && current_run.simulation_complete{
             let x = &trainer_state.best_member_so_far.as_ref().as_ref().unwrap().genome;
-            let phenome = Phenome::from_network_schema(x);
+            let phenome = CpuPhenome::from_network_schema(x);
             current_run.network = Some(x.clone());
             current_run.phenome = Some(phenome);
             current_run.simulation_complete = false;

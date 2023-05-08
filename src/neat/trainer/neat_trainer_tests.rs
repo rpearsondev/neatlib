@@ -13,7 +13,7 @@ fn xor_mutate_test_parallel_times_x(){
 //cargo test --release neat_trainer_tests::xor_mutate_test_parallel_times_x -- --nocapture --ignored
     let success_threshold = 3.999;
     
-    let calculate_fitness = | phenotype: &Phenome, fitness_resolver: &mut FitnessResolver | {
+    let calculate_fitness = | phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver | {
         let xor_results= &[[0.0, 0.0, 0.0], [0.0, 1.0, 1.0], [1.0, 0.0, 1.0], [1.0, 1.0, 0.0]];
 
         let mut fitness_component = 0;
@@ -58,7 +58,7 @@ fn xor_relu_mutate_test_parallel_times_x(){
 //cargo test --release neat_trainer_tests::xor_relu_mutate_test_parallel_times_x -- --nocapture --ignored
     let success_threshold = 3.999;
     
-    let calculate_fitness = | phenotype: &Phenome, fitness_resolver: &mut FitnessResolver | {
+    let calculate_fitness = | phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver | {
         let xor_results= &[[0.0, 0.0, 0.0], [0.0, 1.0, 1.0], [1.0, 0.0, 1.0], [1.0, 1.0, 0.0]];
 
         let mut fitness_component = 0;

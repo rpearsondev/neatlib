@@ -46,9 +46,6 @@ fn show_menu(mut egui_ctx: ResMut<EguiContext>, mut state: ResMut<NeatSettingsGu
                 egui::menu::menu_button(ui, "🖵 Windows", |ui| {
                     
                     ui.checkbox(&mut state.show_network , "show network");
-                    if trainer_state.configuration.hyperneat_substrate_set.is_some(){
-                        ui.checkbox(&mut state.show_substrate , "show substrate");
-                    }
                     ui.checkbox(&mut state.show_events_query , "show events query");
                     if ui.button("quit").clicked() {
                         std::process::exit(0);

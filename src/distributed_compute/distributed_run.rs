@@ -4,19 +4,19 @@ use crate::{neat::trainer::fitness::{fitness_resolver::FitnessResolver}, phenome
 
 use super::distributed_agent::DistributedAgent;
 
-pub struct DistributedRun<F> where F:Fn(&Phenome, &mut FitnessResolver) + std::marker::Sync{
+pub struct DistributedRun<F> where F:Fn(&dyn Phenome, &mut FitnessResolver) + std::marker::Sync{
     pub agent: DistributedAgent,
     setup: fn(),
     set_individual_fitness: F
 }
 
-impl<F> DistributedRun<F> where F:Fn(&Phenome, &mut FitnessResolver) + std::marker::Sync{
+impl<F> DistributedRun<F> where F:Fn(&dyn Phenome, &mut FitnessResolver) + std::marker::Sync{
     pub fn new(
         agent: DistributedAgent,
         set_individual_fitness: F,
         host_setup: fn()
     ) -> Self
-        where F:Fn(&Phenome, &mut FitnessResolver) + std::marker::Sync {
+        where F:Fn(&dyn Phenome, &mut FitnessResolver) + std::marker::Sync {
         Self { 
             agent,
             setup: host_setup,

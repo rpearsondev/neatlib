@@ -5,7 +5,6 @@ use serde::{Serialize, Deserialize};
 use serde::{};
 use super::genome::genome::Genome;
 use crate::common::NeatFloat;
-use crate::hyperneat::substrate::network_definition_factory::XyzSubstrateNetworkDefinition;
 use crate::phenome::Phenome;
 use super::{ 
     genome::neat::{NeatGenome, node_gene::NodeGene}, 
@@ -22,8 +21,7 @@ pub struct GenerationMember <T> where T: Genome{
     pub created_generation: u32,
     pub number_of_generations_since_species_improved: u32,
     #[serde(skip)]
-    pub species_hint: uuid::Uuid,
-    pub hyperneat_network_definition: Option<XyzSubstrateNetworkDefinition>
+    pub species_hint: uuid::Uuid
 }
 
 impl<T>  GenerationMember<T> where T: Genome{
@@ -32,8 +30,7 @@ impl<T>  GenerationMember<T> where T: Genome{
             genome,
             created_generation,
             number_of_generations_since_species_improved: 0,
-            species_hint: uuid::Uuid::nil(),
-            hyperneat_network_definition: None,
+            species_hint: uuid::Uuid::nil()
         }
     }
 }

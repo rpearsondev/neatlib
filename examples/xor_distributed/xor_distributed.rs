@@ -34,7 +34,7 @@ pub fn main(){
     ).run();
 }
 
-fn calculate_fitness(phenotype: &Phenome, fitness_resolver: &mut FitnessResolver) {
+fn calculate_fitness(phenotype: &dyn Phenome, fitness_resolver: &mut FitnessResolver) {
     let xor_results= &[[0.0, 0.0, 0.0], [0.0, 1.0, 1.0], [1.0, 0.0, 1.0], [1.0, 1.0, 0.0]];
     let mut component_id = 0;
     for test in xor_results {

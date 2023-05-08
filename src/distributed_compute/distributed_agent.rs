@@ -62,7 +62,7 @@ impl DistributedAgent{
                 .await;
                 });
     }
-    pub fn start_client_poller<F>(&self, fitness: &F) where F:Fn(&Phenome, &mut FitnessResolver) + std::marker::Sync{
+    pub fn start_client_poller<F>(&self, fitness: &F) where F:Fn(&dyn Phenome, &mut FitnessResolver) + std::marker::Sync{
         let address = self.host_address.clone();
         let rt = runtime::Builder::new_multi_thread()
         .enable_all()
