@@ -5,7 +5,7 @@ use bevy::render::mesh::shape::Box;
 
 const TILE_WIDTH : f32 = 20.0;
 const HALF_TILE_WIDTH : f32 = TILE_WIDTH / 2.0;
-const GAP: f32 = 0.5;
+const GAP: f32 = 2.5;
 const HALF_GAP: f32 = GAP / 2.0;
 const TILES_OUTWARDS_X: i32 = 1;
 const TILES_OUTWARDS_MINUS_X: i32 = -1;

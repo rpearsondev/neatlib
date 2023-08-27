@@ -26,7 +26,7 @@ pub fn main(){
 
     let configuration = Configuration::neat(NodeConf::simple(1, 1), success_threshold)
     .target_species(20)
-    .mutation_node_available_activation_functions(ActivationFunction::TANH| ActivationFunction::SIGMOID | ActivationFunction::RELU | ActivationFunction::BINARY)
+    .mutation_node_available_activation_functions(ActivationFunction::TANH | ActivationFunction::SIGMOID | ActivationFunction::RELU | ActivationFunction::BINARY)
     .genome_minimal_genes_to_connect_ratio(0.0)
     .run_name("sin".to_string())
     .print_summary_interval(None)

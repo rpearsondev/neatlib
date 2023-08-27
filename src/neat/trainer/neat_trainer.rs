@@ -82,7 +82,9 @@ impl NeatTrainer{
             let run_signals = RunSignals::new(&run_context);
 
             for config_regulator in &self.config_regulators{
-                ConfigRegulatorHandler::handle(config_regulator, &mut self.configuration, &run_signals)
+                if run_context.current_generation > config_regulator.start_generation{
+                    ConfigRegulatorHandler::handle(config_regulator, &mut self.configuration, &run_signals)
+                }
             }
 
             run_context.increment_generation();

@@ -1,8 +1,6 @@
 
 # Contribute
 System requirements
-CMake (in path)
-protoc (in path)
 
 #To Do (short term)
 - Finish Load/Save  -DONE

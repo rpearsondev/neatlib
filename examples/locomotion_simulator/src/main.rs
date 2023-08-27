@@ -59,7 +59,7 @@ fn main() {
 
 
 pub fn host_setup(is_distributed: bool){
-    let configuration = Configuration::neat(NodeConf::simple(12, 8),100000.0)
+    let configuration = Configuration::neat(NodeConf::simple(15, 8),100000.0)
     .genome_minimal_genes_to_connect_ratio(0.0)
     .speciation_use_best_seed_bank(Some(2))
     .speciation_cross_species_reproduction_scale(0.02)
@@ -144,6 +144,8 @@ pub fn run_simulation_headless(phenotype: &dyn Phenome, fitness_resolver: &mut F
 
     let sensors = body.get_sensors(&mut simulation.rapier_context).unwrap();
     let behaviours = Behaviours::from_sensors(sensors, previous_sensors);
+    fitness_resolver.add_novelty_component(0, sensors.torso_sensors.translation_x, 10);
+    fitness_resolver.add_novelty_component(1, sensors.torso_sensors.translation_y,  10);
     fitness_resolver.add_objective_fitness_component_with_novelty(2, 1.0, -200.0, sensors.torso_sensors.translation_z, 1);
     fitness_resolver.add_objective_fitness_component(3, 0.2, 0.0, behaviours.distance_from_upright);
     fitness_resolver.add_novelty_component(6, left_leg_high as NeatFloat, 1);
@@ -172,17 +174,21 @@ pub fn run_step(body: &mut SimulationBody, phenome: &dyn Phenome, simulation: &m
             sensors.left_hip_forward_joint.motor_position,
             sensors.left_hip_outward_joint.motor_position,
             sensors.left_knee_joint.motor_position,
-            
+
+            sensors.right_hip_forward_joint.motor_position,
+            sensors.right_hip_outward_joint.motor_position,
+            sensors.right_knee_joint.motor_position,
+
             sensors.counter_balance_z_joint.motor_position,
             sensors.counter_balance_x_joint.motor_position,
             sensors.torso_sensors.y_distance_in_radians_from_y_axis,
             sensors.torso_sensors.x_distance_in_radians_from_y_axis,
             sensors.torso_sensors.z_distance_in_radians_from_y_axis,
             (sim_time_fraction * 12.0).sin(),
-      
-            sensors.right_hip_forward_joint.motor_position,
-            sensors.right_hip_outward_joint.motor_position,
-            sensors.right_knee_joint.motor_position,
+            (sim_time_fraction * 8.0).sin(),
+            (sim_time_fraction * 4.0).sin(),
+            (sim_time_fraction * 2.0).sin(),
+   
         ]
     );
         body.set_motor_positions(&mut simulation.rapier_context, MotorPositions { 

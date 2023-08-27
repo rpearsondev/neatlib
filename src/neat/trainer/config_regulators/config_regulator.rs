@@ -6,6 +6,7 @@ use super::{regulatable_configuration_properties::RegulatableConfigurationProper
 #[derive(Serialize, Deserialize)]
 #[derive(Debug, Clone)]
 pub struct ConfigRegulator{
+    pub start_generation: u32,
     pub property_to_change: RegulatableConfigurationProperties,
     pub max_value_of_property: NeatFloat,
     pub min_value_of_property: NeatFloat,

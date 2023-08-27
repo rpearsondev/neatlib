@@ -7,9 +7,10 @@ use crate::{common::NeatFloat, neat::trainer::configuration::Configuration};
 pub enum RegulatableConfigurationProperties{
     SpeciationGeneticDistanceThreshold,
     SpeciationOffspringOutcomeNoveltyWeight,
-    MutationWeightChangeScale,
+    MutationConnectionWeightChangeScale,
     MutationNodeBiasChangeScale,
-    CppnInputMultiplierScale
+    CppnInputMultiplierScale,
+    CrossSpeciesRepoductionScale
 }
 
 impl RegulatableConfigurationProperties{
@@ -17,10 +18,10 @@ impl RegulatableConfigurationProperties{
         match self {
             RegulatableConfigurationProperties::SpeciationGeneticDistanceThreshold => &mut configuration.speciation_genetic_distance_threshold,
             RegulatableConfigurationProperties::SpeciationOffspringOutcomeNoveltyWeight => &mut configuration.speciation_offspring_outcome_novelty_weight,
-            RegulatableConfigurationProperties::MutationWeightChangeScale => &mut configuration.mutation_connection_weight_change_scale,
+            RegulatableConfigurationProperties::MutationConnectionWeightChangeScale => &mut configuration.mutation_connection_weight_change_scale,
             RegulatableConfigurationProperties::MutationNodeBiasChangeScale => &mut configuration.mutation_node_bias_change_scale,
             RegulatableConfigurationProperties::CppnInputMultiplierScale => &mut configuration.mutation_node_cppn_input_multiplier_change_scale,
-            
+            RegulatableConfigurationProperties::CrossSpeciesRepoductionScale => &mut configuration.speciation_cross_species_reproduction_scale,
         }
     }
 }

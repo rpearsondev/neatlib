@@ -58,6 +58,7 @@ impl ConfigurationDefaults{
     }
     pub fn get_default_regulators(configuration: &Configuration) -> Vec<ConfigRegulator>{
         vec![ConfigRegulator {
+            start_generation: 0,
             max_value_of_property: configuration.speciation_max_threshold,
             min_value_of_property: configuration.speciation_min_threshold,
             when_signal_above_change_factor: 0.5,
@@ -67,6 +68,7 @@ impl ConfigurationDefaults{
             signal_target: configuration.target_species as NeatFloat
         },
         ConfigRegulator {
+            start_generation: 0,
             max_value_of_property: 0.8,
             min_value_of_property: 0.2,
             when_signal_above_change_factor: -0.8,
@@ -76,6 +78,7 @@ impl ConfigurationDefaults{
             signal_target: 0.1 as NeatFloat
         },
         ConfigRegulator {
+            start_generation: 0,
             max_value_of_property: 0.8,
             min_value_of_property: 0.2,
             when_signal_above_change_factor: 0.0,
@@ -85,15 +88,17 @@ impl ConfigurationDefaults{
             signal_target: 0.5 as NeatFloat
         },
         ConfigRegulator {
+            start_generation: 0,
             max_value_of_property: 0.5,
             min_value_of_property: 0.01,
             when_signal_above_change_factor: 0.4,
             when_signal_below_change_factor: -0.5,
-            property_to_change: RegulatableConfigurationProperties::MutationWeightChangeScale,
+            property_to_change: RegulatableConfigurationProperties::MutationConnectionWeightChangeScale,
             signal_name: AvailableRegulationSignals::AvgSpeciesFitnessImprovementInLast10GensComparedToLast100GensAsFactor,
             signal_target: 0.01 as NeatFloat
         },
         ConfigRegulator {
+            start_generation: 0,
             max_value_of_property: 0.5,
             min_value_of_property: 0.01,
             when_signal_above_change_factor: 0.4,
@@ -101,9 +106,9 @@ impl ConfigurationDefaults{
             property_to_change: RegulatableConfigurationProperties::MutationNodeBiasChangeScale,
             signal_name: AvailableRegulationSignals::AvgSpeciesFitnessImprovementInLast10GensComparedToLast100GensAsFactor,
             signal_target: 0.01 as NeatFloat
-        }
-        ,
+        },
         ConfigRegulator {
+            start_generation: 0,
             max_value_of_property: 20.0,
             min_value_of_property: 0.01,
             when_signal_above_change_factor: 0.4,
@@ -111,6 +116,16 @@ impl ConfigurationDefaults{
             property_to_change: RegulatableConfigurationProperties::CppnInputMultiplierScale,
             signal_name: AvailableRegulationSignals::AvgSpeciesFitnessImprovementInLast10GensComparedToLast100GensAsFactor,
             signal_target: 0.01 as NeatFloat
+        },
+        ConfigRegulator {
+            start_generation: 150,
+            max_value_of_property: 0.06,
+            min_value_of_property: 0.01,
+            when_signal_above_change_factor: -0.1,
+            when_signal_below_change_factor: 0.1,
+            property_to_change: RegulatableConfigurationProperties::CrossSpeciesRepoductionScale,
+            signal_name: AvailableRegulationSignals::AvgSpeciesFitnessImprovementInLast10GensComparedToLast100GensAsFactor,
+            signal_target: 0.1 as NeatFloat
         }
         ]
     }

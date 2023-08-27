@@ -22,7 +22,7 @@ fn main() {
     .speciation_offspring_mode(OffSpringMode::AdjustedMemberRange)
     .speciation_drop_species_no_improvement_generations(8)
     .speciation_new_species_protected_for_generations(4)
-    .speciation_cross_species_reproduction_scale(0.01)
+    .speciation_cross_species_reproduction_scale(0.02)
     .population_size(1000);
 
     let (host, client) = NeatTrainerHost::new(NeatTrainer::new(configuration), move |trainer| {

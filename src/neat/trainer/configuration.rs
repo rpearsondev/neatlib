@@ -1,9 +1,7 @@
 #![allow(unused)]
 use array_tool::vec::{Uniq, self};
 use serde::{Deserialize, Serialize, Serializer};
-
 use crate::{neat::{genome::neat::{node_gene::NodeGene, mutation_add_mode::MutationNodeAddMode}, genetable::connect_gene_table::ConnectGeneTable}, node_kind::NodeKind, activation_functions::ActivationFunction, common::{NeatFloat, event_stream::{event::EventType, listeners::listeners::Listeners, event_subscription::EventSubscription}}};
-
 use super::{configuration_defaults::ConfigurationDefaults, node_conf::NodeConf};
 
 pub const MUTABLE_CONFIG_PARAMS: usize = 9;
@@ -95,19 +93,6 @@ impl Configuration{
         configuration.node_genes = node_genes;
         configuration.success_threshold = success_threshold;
         configuration
-    }
-    pub fn set_mutation_config(original: &Configuration, outputs: &Vec<NeatFloat>) -> Self{
-        let mut new_config = original.clone();
-        new_config.mutation_node_add_probability = outputs[0];
-        new_config.mutation_node_delete_probability = outputs[1];
-        new_config.mutation_connection_add_probability = outputs[2];
-        new_config.mutation_connection_delete_probability = outputs[3];
-        new_config.mutation_connection_weight_change_probability = outputs[4];
-        new_config.mutation_connection_weight_change_scale = outputs[5];
-        new_config.mutation_connection_weight_replace_probability = outputs[6];
-        new_config.mutation_node_bias_change_probability = outputs[7];
-        new_config.mutation_node_bias_change_scale = outputs[8];
-        new_config
     }
     pub fn mutation_no_mutation(mut self) -> Self {
         self.mutation_node_add_probability = 0.0;
