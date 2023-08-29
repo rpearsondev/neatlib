@@ -3,6 +3,7 @@ members = [
     "examples/rocket_simulator",
     "examples/locomotion_simulator",
     "examples/cppn_test",
+    "examples/mnist"
 ]
 resolver = "2"
 

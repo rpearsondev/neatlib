@@ -1,13 +1,20 @@
 use neatlib::{neat::trainer::{node_conf::NodeConf, configuration::{Configuration, OffSpringMode}, neat_trainer::NeatTrainer, activation_strategies::activation_strategies::ActivationStrategies, fitness::{fitness_setter::{FitnessSetter}, fitness_resolver::FitnessResolver}, run_context::RunContext, neat_trainer_host::neat_trainer_host::NeatTrainerHost}, activation_functions::ActivationFunction, common::NeatFloat, renderer::renderer::{self, NullSimulationRenderer}};
+use neural_model_gpu_runner::NeuralModelGpuRunner;
+use data_loader::DataLoader;
+use neural_model::NeuralModel;
+
+pub mod neural_model_gpu_runner;
+pub mod data_loader;
+pub mod neural_model;
 
 pub fn main(){
 
     let gpu = NeuralModelGpuRunner::new();
     
-    let (training_data_source, testing_data_source) = DataLoader::from_directory("c:\\temp", "(?<class>.*).jpg");
+    let (training_data_source, testing_data_source) = DataLoader::new();
     
     let model = NeuralModel::new();
-    pipeline.add_layer(InputLayer::new(vec![28, 28, 1]));
+    model.add_layer(InputLayer::new(vec![28, 28, 1]));
     pipeline.add_layer(Conv::new(ConvOptions{}));
     pipeline.add_layer(MapPool::new(MaxPoolOptions{}));
     pipeline.add_layer(Dense::new(vec![4], DenseOptions{}));
