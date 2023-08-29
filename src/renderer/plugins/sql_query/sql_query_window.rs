@@ -1,6 +1,6 @@
 use bevy::prelude::{ResMut, Plugin, App};
 use bevy_egui::{*, egui::{Ui, RichText, FontId, Color32}};
-use gluesql::prelude::{Payload, Row};
+use gluesql::{prelude::Payload};
 
 use crate::{common::event_stream::{listeners::{sql_listener::REPOSITORY, listeners::Listeners}, event::EventType, event_subscription::EventSubscription}, renderer::{renderer::NeatTrainerState, plugins::neat_settings_gui::NeatSettingsGuiState}};
 
@@ -130,7 +130,7 @@ limit 10", event_type)
                     egui::Grid::new("some_unique_id").show(ui, |ui| {
                         add_species_headers(ui, labels);
                         for row in rows{
-                            add_species_row(ui, row);
+                            add_row(ui, row);
                         }
                     });
                 },
@@ -143,8 +143,10 @@ limit 10", event_type)
                 Payload::StartTransaction => {},
                 Payload::Commit => {},
                 Payload::Rollback => {},
-                Payload::ShowVariable(_) => {},
-                Payload::ShowIndexes(_) => {},
+                Payload::ShowVariable(_) => {}
+                Payload::SelectMap(_) => {},
+                Payload::DropFunction => {},
+                
             }
         }
         
@@ -190,13 +192,13 @@ pub fn add_species_headers(ui: &mut Ui, labels: &Vec<String>){
     ui.end_row();
 }
 
-pub fn add_species_row(ui: &mut Ui, row: &Row){
+pub fn add_row(ui: &mut Ui, row: &std::vec::Vec<gluesql::prelude::Value>){
     let font_size = 10.0 as f32;
     let mut cell = |text: String, color: Color32| {
         ui.label(RichText::new(text).font(FontId::proportional(font_size)).color(color));
     };
 
-    let values = &row.0;
+    let values = row;
     for value in values{
         cell(String::from(value), Color32::BLACK);
     }

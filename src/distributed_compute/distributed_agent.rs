@@ -1,7 +1,7 @@
 use core::time;
 use std::{net::{SocketAddr}, future, env};
 use tarpc::{client, context, server::{self, Channel}};
-use tokio::{runtime};
+use tokio::runtime;
 use futures::StreamExt;
 use tarpc::server::incoming::Incoming;
 use gethostname::gethostname;
@@ -108,7 +108,7 @@ impl DistributedAgent{
                             break;
                         }
     
-                        current_generation_data = Some(generation_data_result.to_owned().unwrap());
+                        current_generation_data = Some(generation_data_result.unwrap());
                         
                         if current_generation_data.as_ref().unwrap().configuration.is_none(){
                             println!("No configuration");

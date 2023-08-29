@@ -119,8 +119,8 @@ impl ConfigurationDefaults{
         },
         ConfigRegulator {
             start_generation: 150,
-            max_value_of_property: 0.06,
-            min_value_of_property: 0.01,
+            max_value_of_property: 0.02,
+            min_value_of_property: 0.001,
             when_signal_above_change_factor: -0.1,
             when_signal_below_change_factor: 0.1,
             property_to_change: RegulatableConfigurationProperties::CrossSpeciesRepoductionScale,

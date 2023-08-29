@@ -1,4 +1,4 @@
-use gluesql::{prelude::*, core::result::Error};
+use gluesql::prelude::*;
 use std::sync::Mutex;
 use array_tool::vec::Join;
 
@@ -66,6 +66,13 @@ impl SqlRepository{
                 DataType::Map => format!("{}", String::from(value)),
                 DataType::List => format!("{}", String::from(value)),
                 DataType::Decimal => format!("{}", String::from(value)),
+                DataType::Uint16 => format!("{}", String::from(value)),
+                DataType::Uint32 => format!("{}", String::from(value)),
+                DataType::Uint64 => format!("{}", String::from(value)),
+                DataType::Uint128 => format!("{}", String::from(value)),
+                DataType::Float32 => format!("{}", String::from(value)),
+                DataType::Inet => format!("{}", String::from(value)),
+                DataType::Point => format!("{}", String::from(value)),
             };
             column_values.push(literal_value);
         }
