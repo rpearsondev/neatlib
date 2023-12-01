@@ -117,7 +117,7 @@ impl Speciation{
             if hint_species.is_some(){
                 let hint_species_unwrapped = hint_species.unwrap();
                 let genetic_distance = outer.genome.get_genetic_difference_distance_from(&hint_species_unwrapped.primary.genome, threshold);
-                if(genetic_distance == NeatFloat::INFINITY || genetic_distance == NeatFloat::NAN || genetic_distance < 0.0){
+                if(genetic_distance == NeatFloat::INFINITY || genetic_distance.is_nan() || genetic_distance < 0.0){
                     panic!("genetic distance inf or nan");
                 }
                 
@@ -130,7 +130,7 @@ impl Speciation{
             
             for (s, existing_species) in  run_context.species_index.iter_mut(){
                 let genetic_distance = outer.genome.get_genetic_difference_distance_from(&existing_species.primary.genome, threshold);
-                if(genetic_distance == NeatFloat::INFINITY || genetic_distance == NeatFloat::NAN ||genetic_distance < 0.0){
+                if(genetic_distance == NeatFloat::INFINITY || genetic_distance.is_nan() ||genetic_distance < 0.0){
                     panic!("genetic distance inf or nan");
                 }
                 if genetic_distance < threshold {

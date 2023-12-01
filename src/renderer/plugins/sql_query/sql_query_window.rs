@@ -1,6 +1,6 @@
 use bevy::prelude::{ResMut, Plugin, App};
 use bevy_egui::{*, egui::{Ui, RichText, FontId, Color32}};
-use gluesql::{prelude::Payload};
+use gluesql::prelude::Payload;
 
 use crate::{common::event_stream::{listeners::{sql_listener::REPOSITORY, listeners::Listeners}, event::EventType, event_subscription::EventSubscription}, renderer::{renderer::NeatTrainerState, plugins::neat_settings_gui::NeatSettingsGuiState}};
 
@@ -169,7 +169,7 @@ fn add_subscription(trainer_state: &mut ResMut<NeatTrainerState>, event_type: Ev
 }
 
 fn remove_subscription(trainer_state: &mut ResMut<NeatTrainerState>, event_type: EventType){
-    for mut subscription in &mut trainer_state.configuration.event_subscriptions{
+    for subscription in &mut trainer_state.configuration.event_subscriptions{
         if subscription.listeners & Listeners::SQL == Listeners::SQL{
             subscription.event_type = subscription.event_type ^ event_type;
         }
